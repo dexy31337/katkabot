@@ -7,7 +7,7 @@ TELEGRAM_BOT_TOKEN = ENV['TOKEN']
 
 bot = TelegramBot.new(token: TELEGRAM_BOT_TOKEN, logger: Logger.new(STDOUT))
 maps = ['Ancient','Anubis','Cache','Canals','Cobblestone','D2','Engage','Inferno','Mirage','Nuke','Overpass','Train','Vertigo','Agency','Apollo','Italy','Militia','Office']
-cocktails = ['Молик тебе в темку','Две хаешки на твой банан','Засмочил тебе туалеты']
+cocktails = ['Молик тебе в темку','Две хаешки на твой банан','Засмочил тебе туалеты','А не сгоришь в молике?','Сейчас я им буст развалю','ХЕ себе под ноги кинь!','Выходи так, там никого','Я белый...','Даю декой в коннектор','Спрей контролить научись, потом проси','Может тебе еще хед флешкой поставить?','Попикай пока, а там посмотрим','А без флешки слабо выйти?']
 
 usernames = []
 usersFile = './db/users'
