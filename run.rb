@@ -69,6 +69,10 @@ bot.get_updates(fail_silently: true) do |message|
       reply.text = "В списке: " + usernames.join(", ")
     when /iwannaplay/i
       reply.text = "Го катать! @" + usernames.join(" @")
+    when /addv2/i
+          option = 'What you wanna do?'
+          answers = Telegram::Bot::Types::ReplyKeyboardMarkup.new(keyboard: [%w(Add Remove), %w(Search)], one_time_keyboard: true)
+          bot.api.send_message(chat_id: message.chat.id, text: option, reply_markup: answers)
     else
       reply.text = ""
     end
