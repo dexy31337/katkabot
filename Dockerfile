@@ -7,6 +7,8 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
+RUN mkdir /app/db
+
 COPY . .
 
 CMD ["./run.rb"]

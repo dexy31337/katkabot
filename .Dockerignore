@@ -1,3 +1,7 @@
 .gitignore
 .git
+Gemfile.lock
+README.md
 run.sh
+Dockerfile
+db

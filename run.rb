@@ -4,7 +4,7 @@ require 'logger'
 require 'telegram_bot'
 =begin
 maps_all - Выбор из 18 карт
-maps_comp - Выбор из 18 карт
+maps_comp - Выбор из оф. маппула
 callme - Вписаться в оповещения
 fuckoff - Выписаться из оповещений
 list - Список оповещаемых
@@ -20,6 +20,8 @@ cocktails = ['Молик тебе в темку','Две хаешки на тв�
 
 usernames = []
 usersFile = './db/users'
+csUsersFile = './db/usersCS'
+valorantUsersFile = './db/usersValorant'
 
 if File.exists?(usersFile)
   marsharr = Marshal.load File.read(usersFile)
