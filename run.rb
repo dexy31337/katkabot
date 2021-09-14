@@ -12,9 +12,10 @@ goCS - заколить CS
 goValorant - заколить Valorant
 maps_all - Выбор из 18 карт CS
 maps_comp - Выбор из оф. маппула CS
+cocktail - Коктейль
 =end
 
-TELEGRAM_BOT_TOKEN = '1497787322:AAHqsj6e-DDOpmrQOHFvZo6Dz4U8JTxXkQE'
+TELEGRAM_BOT_TOKEN = ENV['TOKEN']
 
 
 maps = ['Ancient','Anubis','Cache','Canals','Cobblestone','D2','Engage','Inferno','Mirage','Nuke','Overpass','Train','Vertigo','Agency','Apollo','Italy','Militia','Office']
@@ -117,13 +118,13 @@ Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN, logger: Logger.new(STDOUT)) do |bo
                 text = "Го катнём на #{comp_maps[rand(comp_maps.length)]}"
                 bot.api.send_message(chat_id: message.chat.id, text: text)
             when /listCS/i
-                text = "В КТ гоняют\n" + usernamesCS.join("\n   ")
+                text = "В КТ гоняют\n   " + usernamesCS.join("\n   ")
                 bot.api.send_message(chat_id: message.chat.id, text: text)
             when /listValorant/i
-                text = "В Валорант гоняют\n" + usernamesValorant.join("\n   ")
+                text = "В Валорант гоняют\n   " + usernamesValorant.join("\n   ")
                 bot.api.send_message(chat_id: message.chat.id, text: text)
             when /list/i
-                text = "В КТ гоняют\n" + usernamesCS.join("\n   ") + "\n\n" + "В Валорант гоняют\n" + usernamesValorant.join("\n   ")
+                text = "В КТ гоняют\n   " + usernamesCS.join("\n   ") + "\n\n" + "В Валорант гоняют\n   " + usernamesValorant.join("\n   ")
                 bot.api.send_message(chat_id: message.chat.id, text: text)
             when /(manage|start)/i
                 kb = [
@@ -148,7 +149,7 @@ Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN, logger: Logger.new(STDOUT)) do |bo
                     end
                 end
             when /goCS/i
-                text = "Го катать в CS! Cпайк @" + usernamesCS.join(" @") 
+                text = "Го катать в CS! @" + usernamesCS.join(" @") 
                 bot.api.send_message(chat_id: message.chat.id, text: text)
             when /goValorant/i
                 text = "Го катать в Valorant! @" + usernamesValorant.join(" @") 
