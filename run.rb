@@ -6,12 +6,12 @@ require 'logger'
 =begin
 manage - Управлять подпиской
 list - список всех кто катает
-listCS - список кто катает в КС
-listValorant - список кто катает в Valorant
-listOverwatch - список кто катает в Overwatch
-goCS - заколить CS
-goValorant - заколить Valorant
-goOverwatch - заколить Overwatch
+listcs - список кто катает в КС
+listvalorant - список кто катает в Valorant
+listoverwatch - список кто катает в Overwatch
+gocs - заколить CS
+govalorant - заколить Valorant
+gooverwatch - заколить Overwatch
 maps_all - Выбор из 18 карт CS
 maps_comp - Выбор из оф. маппула CS
 cocktail - Коктейль
