@@ -8,8 +8,10 @@ manage - Управлять подпиской
 list - список всех кто катает
 listCS - список кто катает в КС
 listValorant - список кто катает в Valorant
+listOverwatch - список кто катает в Overwatch
 goCS - заколить CS
 goValorant - заколить Valorant
+goOverwatch - заколить Overwatch
 maps_all - Выбор из 18 карт CS
 maps_comp - Выбор из оф. маппула CS
 cocktail - Коктейль
@@ -24,9 +26,11 @@ cocktails = ['Молик тебе в темку','Две хаешки на тв�
 
 usernamesCS = []
 usernamesValorant = []
+usernamesOverwatch = []
 
 csUsersFile = './db/users'
 valorantUsersFile = './db/usersValorant'
+overwatchUsersFile = './db/usersOverwatch'
 
 if File.exists?(csUsersFile)
   marsharr = Marshal.load File.read(csUsersFile)
@@ -40,11 +44,20 @@ end
 if File.exists?(valorantUsersFile)
   marsharr = Marshal.load File.read(valorantUsersFile)
   usernamesValorant = usernamesValorant + marsharr.reject { |e| e.to_s.empty? }
-  puts "Read Valoran users file:"
+  puts "Read Valorant users file:"
   puts usernamesValorant
 else
   puts "Starting with empty file"
 end
+
+if File.exists?(overwatchUsersFile)
+    marsharr = Marshal.load File.read(overwatchUsersFile)
+    usernamesOverwatch = usernamesOverwatch + marsharr.reject { |e| e.to_s.empty? }
+    puts "Read Overwatch users file:"
+    puts usernamesOverwatch
+  else
+    puts "Starting with empty file"
+  end
 
 
 Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN, logger: Logger.new(STDOUT)) do |bot|
@@ -76,15 +89,14 @@ Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN, logger: Logger.new(STDOUT)) do |bo
                 end
             when 'addValorant'
                 if (message.from.username == nil)
-                text = "У тебя нет юзернейма :( Не могу"
-              elsif usernamesValorant.index(message.from.username)
-                text = "А какбэ ты и так в списке..."
-              else
-                usernamesValorant << message.from.username 
-                File.write(valorantUsersFile,Marshal.dump(usernamesValorant))
-                text = "Готово, #{message.from.username}, добавил к шпекерам в Valorant!"
-              end
-            
+                    text = "У тебя нет юзернейма :( Не могу"
+                elsif usernamesValorant.index(message.from.username)
+                    text = "А какбэ ты и так в списке..."
+                else
+                    usernamesValorant << message.from.username 
+                    File.write(valorantUsersFile,Marshal.dump(usernamesValorant))
+                    text = "Готово, #{message.from.username}, добавил к шпекерам в Valorant!"
+                end
             when 'delValorant'
                 if (message.from.username == nil)
                     text = "У тебя нет юзернейма :( Не могу"
@@ -94,6 +106,26 @@ Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN, logger: Logger.new(STDOUT)) do |bo
                     text = "Готово, #{message.from.username}, больше не буду звать в Valorant!"
                 else
                     text = "Тебя нет в списке шпекеров в Valorant."
+                end
+            when 'addOverwatch'
+                if (message.from.username == nil)
+                    text = "У тебя нет юзернейма :( Не могу"
+                elsif usernamesOverwatch.index(message.from.username)
+                    text = "А какбэ ты и так в списке..."
+                else
+                    usernamesOverwatch << message.from.username 
+                    File.write(overwatchUsersFile,Marshal.dump(usernamesOverwatch))
+                    text = "Готово, #{message.from.username}, добавил к шпекерам в Overwatch!"
+                end
+            when 'delOverwatch'
+                if (message.from.username == nil)
+                    text = "У тебя нет юзернейма :( Не могу"
+                elsif usernamesOverwatch.index(message.from.username)
+                    usernamesOverwatch.delete_at(usernamesOverwatch.index(message.from.username))
+                    File.write(overwatchUsersFile,Marshal.dump(usernamesOverwatch))
+                    text = "Готово, #{message.from.username}, больше не буду звать в Overwatch!"
+                else
+                    text = "Тебя нет в списке шпекеров в Overwatch."
                 end
             end
             bot.api.send_message(chat_id: message.from.id, text: text)
@@ -123,18 +155,23 @@ Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN, logger: Logger.new(STDOUT)) do |bo
             when /listValorant/i
                 text = "В Валорант гоняют\n   " + usernamesValorant.join("\n   ")
                 bot.api.send_message(chat_id: message.chat.id, text: text)
+            when /listOverwatch/i
+                text = "В Овервотч гоняют\n   " + usernamesOverwatch.join("\n   ")
+                bot.api.send_message(chat_id: message.chat.id, text: text)
             when /list/i
-                text = "В КТ гоняют\n   " + usernamesCS.join("\n   ") + "\n\n" + "В Валорант гоняют\n   " + usernamesValorant.join("\n   ")
+                text = "В КТ гоняют\n   " + usernamesCS.join("\n   ") + "\n\n" + "В Валорант гоняют\n   " + usernamesValorant.join("\n   ") + "\n\n" + "В Овервотч гоняют\n   " + usernamesOverwatch.join("\n   ")
                 bot.api.send_message(chat_id: message.chat.id, text: text)
             when /(manage|start)/i
                 kb = [
                     [
                         Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Add CS', callback_data: 'addCS'),
                         Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Add Valorant', callback_data: 'addValorant')
+                        Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Add Overwatch', callback_data: 'addOverwatch')
                     ],
                     [
                         Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Del CS', callback_data: 'delCS'),
                         Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Del Valorant', callback_data: 'delValorant')
+                        Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Del Overwatch', callback_data: 'delOverwatch')
                     ]
                 ]
                 markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
@@ -153,6 +190,9 @@ Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN, logger: Logger.new(STDOUT)) do |bo
                 bot.api.send_message(chat_id: message.chat.id, text: text)
             when /goValorant/i
                 text = "Го катать в Valorant! @" + usernamesValorant.join(" @") 
+                bot.api.send_message(chat_id: message.chat.id, text: text)
+            when /goOverwatch/i
+                text = "Го катать в Overwatch! @" + usernamesOverwatch.join(" @") 
                 bot.api.send_message(chat_id: message.chat.id, text: text)
             end
 
