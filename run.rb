@@ -165,12 +165,12 @@ Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN, logger: Logger.new(STDOUT)) do |bo
                 kb = [
                     [
                         Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Add CS', callback_data: 'addCS'),
-                        Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Add Valorant', callback_data: 'addValorant')
+                        Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Add Valorant', callback_data: 'addValorant'),
                         Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Add Overwatch', callback_data: 'addOverwatch')
                     ],
                     [
                         Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Del CS', callback_data: 'delCS'),
-                        Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Del Valorant', callback_data: 'delValorant')
+                        Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Del Valorant', callback_data: 'delValorant'),
                         Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Del Overwatch', callback_data: 'delOverwatch')
                     ]
                 ]
